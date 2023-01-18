@@ -27,7 +27,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   if (!username || !password || !Array.isArray(roles) || !roles.length) {
     return res.status(400).json({ message: "All fields are required" });
   }
-
+ 
   // Check for duplicates
   const duplicate = await User.findOne({ username }).lean().exec();
 
@@ -69,7 +69,7 @@ const updateUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const user = await user.findById(id).exec();
+  const user = await User.findById(id).exec();
 
   if (!user) {
     return res.status(400).json({ message: "User not found" });
@@ -106,8 +106,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User ID Required" });
   }
 
-  const notes = await Note.findOne({ user: id }).lean().exec();
-  if (notes?.length) {
+  const note = await Note.findOne({ user: id }).lean().exec();
+  if (note) {
     return res.status(400).json({ message: "User has assigned notes" });
   }
 
